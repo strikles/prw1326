@@ -40,15 +40,6 @@ void CExtractActions::ExtractPreviousRoundActions()
 		double current_bet = g_symbols->get_currentbet(chair_ndx);
 		double balance = g_symbols->get_balance(chair_ndx);
 
-		// opp modeling - move
-		double pt_vpip = g_symbols->_pt.get_pt_vpip(chair_ndx);
-		double pt_pfr = g_symbols->_pt.get_pt_pfr(chair_ndx);
-		if (pt_vpip < 0)
-			pt_vpip = 0.4;
-
-		if (pt_pfr < 0)
-			pt_pfr = 0.15;
-
 		// Folded previous betround
 		if ( !is_active_bit(chair_ndx, g_symbols->get_playersplayingbits()) )
 		{
@@ -66,6 +57,8 @@ void CExtractActions::ExtractPreviousRoundActions()
 				actionCheck,
 				0,
 				balance);
+
+			_opp_model.ModelOpponent(chair_ndx, _prev_betround, actionCheck);
 		}
 		// Called
 		else if ( _current_hand_info._player_actions[chair_ndx]._actions[_prev_betround][prev_times_acted]._balance > balance )
@@ -76,8 +69,7 @@ void CExtractActions::ExtractPreviousRoundActions()
 				_current_hand_info._amount_to_call[_prev_betround],
 				balance);
 
-			if (_prev_betround == ePreflop)
-				_opp_model.PrwSetPreflopMiddleList(chair_ndx, pt_vpip, pt_pfr, 1024);
+			_opp_model.ModelOpponent(chair_ndx, _prev_betround, actionCall);
 		}
 	}
 }
@@ -106,15 +98,6 @@ void CExtractActions::ExtractPreviousTimesActedActions()
 		double current_bet = g_symbols->get_currentbet(chair_ndx);
 		double balance = g_symbols->get_balance(chair_ndx);
 
-		//opp modeling - move
-		double pt_vpip = g_symbols->_pt.get_pt_vpip(chair_ndx);
-		double pt_pfr = g_symbols->_pt.get_pt_pfr(chair_ndx);
-		if (pt_vpip < 0)
-			pt_vpip = 0.4;
-
-		if (pt_pfr < 0)
-			pt_pfr = 0.15;
-
 		// Folded previous times acted
 		if ( current_bet < _current_hand_info._amount_to_call[betround] )
 		{
@@ -133,6 +116,8 @@ void CExtractActions::ExtractPreviousTimesActedActions()
 				actionCheck,
 				0,
 				balance);
+
+			_opp_model.ModelOpponent(chair_ndx, betround, actionCheck);
 		}
 		// Call
 		else if ( IsEqual(current_bet, _current_hand_info._amount_to_call[betround] ) ||
@@ -144,10 +129,7 @@ void CExtractActions::ExtractPreviousTimesActedActions()
 				_current_hand_info._amount_to_call[betround],
 				balance);
 
-			if (betround == ePreflop)
-				_opp_model.PrwSetPreflopMiddleList(chair_ndx, pt_vpip, pt_pfr, 1024);
-			else
-				_opp_model.Prw1326Postflop(chair_ndx, 1024);
+			_opp_model.ModelOpponent(chair_ndx, betround, actionCall);
 		}
 		// Raise
 		else if ( current_bet > _current_hand_info._amount_to_call[betround] )
@@ -158,10 +140,7 @@ void CExtractActions::ExtractPreviousTimesActedActions()
 				current_bet,
 				balance);
 
-			if (betround == ePreflop)
-				_opp_model.PrwSetPreflopTopList(chair_ndx, pt_pfr, 1024);
-			else
-				_opp_model.Prw1326Postflop(chair_ndx, 1024);
+			_opp_model.ModelOpponent(chair_ndx, betround, actionBetRaise);
 		}
 	}
 }
@@ -195,15 +174,6 @@ void CExtractActions::ExtractCurrentActions()
 			_current_hand_info._amount_to_call[betround]);
 		*/
 
-		// opp modelling - move
-		double pt_vpip = g_symbols->_pt.get_pt_vpip(chair_ndx);
-		double pt_pfr = g_symbols->_pt.get_pt_pfr(chair_ndx);
-		if (pt_vpip < 0)
-			pt_vpip = 0.4;
-
-		if (pt_pfr < 0)
-			pt_pfr = 0.15;
-
 		// Fold
 		if ( current_bet < _current_hand_info._amount_to_call[betround] )
 		{
@@ -222,6 +192,8 @@ void CExtractActions::ExtractCurrentActions()
 				actionCheck,
 				0,
 				balance);
+
+			_opp_model.ModelOpponent(chair_ndx, betround, actionCheck);
 		}
 		// Call - player may have less than call amount and go all-in
 		else if ( ( IsEqual(current_bet, _current_hand_info._amount_to_call[betround]) && 
@@ -234,10 +206,7 @@ void CExtractActions::ExtractCurrentActions()
 				current_bet,
 				balance);
 
-			if (betround == ePreflop)
-				_opp_model.PrwSetPreflopMiddleList(chair_ndx, pt_vpip, pt_pfr, 1024);
-			else
-				_opp_model.Prw1326Postflop(chair_ndx, 1024);
+			_opp_model.ModelOpponent(chair_ndx, betround, actionCall);
 		}
 		// Raise
 		else if ( current_bet > _current_hand_info._amount_to_call[betround] )
@@ -248,10 +217,7 @@ void CExtractActions::ExtractCurrentActions()
 				current_bet,
 				balance);
 
-			if (betround == ePreflop)
-				_opp_model.PrwSetPreflopTopList(chair_ndx, pt_pfr, 1024);
-			else
-				_opp_model.Prw1326Postflop(chair_ndx, 1024);
+			_opp_model.ModelOpponent(chair_ndx, betround, actionBetRaise);
 		}
 	}
 }

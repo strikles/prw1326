@@ -65,6 +65,7 @@ ePreflopAction CPlayerState::GetPreflopAction(const bool bWasPreflopBlindStealAt
 		if (_actions[ePreflop][i]._player_action == NoAction || 
 			_actions[ePreflop][i]._player_action == actionFold)
 			break;
+
 		if (_actions[ePreflop][i]._player_action == actionPostedSB || 
 			_actions[ePreflop][i]._player_action == actionPostedBB)
 			iFirstAction++;
@@ -127,7 +128,7 @@ ePreflopAction CPlayerState::GetPreflopAction(const bool bWasPreflopBlindStealAt
 	return ret;
 }
 
-ePostflopAction CPlayerState::GetPostflopAction(enumStreets iRound)
+ePostflopAction CPlayerState::GetPostflopAction(int iRound)
 {
 	ePostflopAction ret = eActionUnknown;
 	int nActions = _total_actions[iRound];

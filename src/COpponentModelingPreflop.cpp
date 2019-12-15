@@ -14,7 +14,7 @@ void COpponentModeling::init(int listnum, int weight)
 	Prw1326AddPocketPair(listnum, 12, weight);
 	//2. KK
 	Prw1326AddPocketPair(listnum, 11, weight);
-	//3. AKs
+	//3. AKsk_num_suits
 	Prw1326AddSuit(listnum, 12, 11, weight);
 	//4. QQ
 	Prw1326AddPocketPair(listnum, 10, weight);

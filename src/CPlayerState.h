@@ -39,5 +39,5 @@ public:
 	void AddAction(int betround, ePlayerAction action, double amount, double balance, int ncalls, int nraises, int nchecks, double facing_bet, double pot);
 	void Clear();
 	ePreflopAction GetPreflopAction(const bool b_steal_attempt);
-	ePostflopAction GetPostflopAction(enumStreets iRound);
+	ePostflopAction GetPostflopAction(int iRound);
 };

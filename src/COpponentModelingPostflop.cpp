@@ -30,9 +30,9 @@ void COpponentModeling::GiveVillainStraights(int player_ndx)
 					}
 				}
 
-				for (int p = 0; p < 4; p++)
+				for (int p = 0; p < k_num_suits; p++)
 				{
-					for (int k = 0; k < 4; k++)
+					for (int k = 0; k < k_num_suits; k++)
 					{
 						if (cards[0] == cards[1] && p == k)
 							continue;
@@ -62,9 +62,9 @@ void COpponentModeling::GiveVillainStraights(int player_ndx)
 
 				for (int rank_ndx = 0; rank_ndx < 13; rank_ndx++)
 				{
-					for (int p = 0; p < 4; p++)
+					for (int p = 0; p < k_num_suits; p++)
 					{
-						for (int k = 0; k < 4; k++)
+						for (int k = 0; k < k_num_suits; k++)
 						{
 							if (cards[0] == rank_ndx && p == k)
 								continue;
@@ -94,9 +94,9 @@ void COpponentModeling::GiveVillainFlushes(int player_ndx)
 	{
 		if (bitcount(g_symbols->get_suitbitscommon(s)) == 3)
 		{
-			for (int rank1_ndx = 0; rank1_ndx < 13; rank1_ndx++)
+			for (int rank1_ndx = 0; rank1_ndx < k_num_ranks; rank1_ndx++)
 			{
-				for (int rank2_ndx = rank1_ndx + 1; rank2_ndx < 13; rank2_ndx++)
+				for (int rank2_ndx = rank1_ndx + 1; rank2_ndx < k_num_ranks; rank2_ndx++)
 				{
 					int prw1326_ndx = Prw1326GetListElement(player_ndx, rank1_ndx, rank2_ndx, k_prw1326_suit[s], k_prw1326_suit[s]);
 					prw1326_flushes[player_ndx].insert(prw1326_ndx);
@@ -107,9 +107,9 @@ void COpponentModeling::GiveVillainFlushes(int player_ndx)
 		// villain hit a flush - 1 cards required
 		if (bitcount(g_symbols->get_suitbitscommon(s)) >= 4)
 		{
-			for (int rank1_ndx = 0; rank1_ndx < 13; rank1_ndx++)
+			for (int rank1_ndx = 0; rank1_ndx < k_num_ranks; rank1_ndx++)
 			{
-				for (int rank2_ndx = rank1_ndx + 1; rank2_ndx < 13; rank2_ndx++)
+				for (int rank2_ndx = rank1_ndx + 1; rank2_ndx < k_num_ranks; rank2_ndx++)
 				{
 					// 2 cards used
 					int prw1326_ndx = Prw1326GetListElement(player_ndx, rank1_ndx, rank2_ndx, k_prw1326_suit[s], k_prw1326_suit[s]);
@@ -138,11 +138,11 @@ void COpponentModeling::GiveVillainPairs(int player_ndx)
 	int board_rank2 = g_symbols->get_$$cr1() - 2;
 	int board_rank3 = g_symbols->get_$$cr2() - 2;
 
-	for (int rank_ndx = 0; rank_ndx < 13; rank_ndx++)
+	for (int rank_ndx = 0; rank_ndx < k_num_ranks; rank_ndx++)
 	{
-		for (int p = 0; p < 4; p++)
+		for (int p = 0; p < k_num_suits; p++)
 		{
-			for (int k = 0; k < 4; k++)
+			for (int k = 0; k < k_num_suits; k++)
 			{
 				if (g_symbols->get_betround() == eFlop)
 				{
