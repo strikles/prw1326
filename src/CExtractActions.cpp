@@ -58,7 +58,7 @@ void CExtractActions::ExtractPreviousRoundActions()
 				0,
 				balance);
 
-			_opp_model.ModelOpponent(chair_ndx, betround, actionCheck);
+			_opp_model.ModelOpponent(chair_ndx, _prev_betround, actionCheck);
 		}
 		// Called
 		else if ( _current_hand_info._player_actions[chair_ndx]._actions[_prev_betround][prev_times_acted]._balance > balance )
@@ -69,7 +69,7 @@ void CExtractActions::ExtractPreviousRoundActions()
 				_current_hand_info._amount_to_call[_prev_betround],
 				balance);
 
-			_opp_model.ModelOpponent(chair_ndx, betround, actionCall);
+			_opp_model.ModelOpponent(chair_ndx, _prev_betround, actionCall);
 		}
 	}
 }
