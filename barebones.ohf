@@ -1,0 +1,91 @@
+##f$allin##
+
+
+
+##f$betpot_1_1##
+me_re_dec - currentbet - call == pot ? 1 : 0
+
+
+##f$betpot_1_2##
+me_re_dec - currentbet - call == pot/2 ? 1 : 0
+
+
+##f$betsize##
+// Betsize in dollars, raise-to semantics.
+// OpenHoldem will auto-adapt the betsize to the casinos input-requirements.
+// Please define your tablemaps "betsizeinterpretationmethod"
+// to configure this feature.
+me_re_dec - currentbet - call > 0 ? me_re_dec : 0
+
+
+##f$raise##
+me_re_dec - currentbet - call > 0 ? 1 : 0
+
+
+##f$call##
+(me_re_dec - currentbet - call >= 0) || (call == balance AND me_re_dec > currentbet) ? 1 : 0
+
+
+##f$sitin##
+
+
+
+##f$sitout##
+
+
+
+##f$leave##
+
+
+
+##f$prefold##
+
+
+
+##f$chat##
+
+
+
+##f$delay##
+// Autoplayer-delay in milli-seconds
+0
+
+
+##f$shoot_replay_frame##
+1
+
+
+##f$ini_function_on_connection##
+0
+
+
+##f$ini_function_on_handreset##
+0
+
+
+##f$ini_function_on_new_round##
+0
+
+
+##f$ini_function_on_my_turn##
+isfinalanswer ? me_st_dec_f$dlldecision : 0
+
+
+##f$ini_function_on_heartbeat##
+0
+
+
+##f$test##
+0
+
+
+##f$debug##
+= userchair
+= AmountToCall
+= dll$random
+
+
+##f$dlldecision##
+dll$decision
+
+
