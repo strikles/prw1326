@@ -84,7 +84,7 @@ public:
 	void PrwSetPreflopBottomList(int player_ndx, double exclude_pct, int weight);
 	void PrwSetPreflopMiddleList(int player_ndx, double play_pct, double exclude_pct, int weight);
 	void PrwSetPreflopTopList(int player_ndx, double play_pct, int weight);
-	//int  ModelOpponents();
+	int  ModelOpponent(int chair_ndx,int betround, int action);
 
 	void init(int listnum, int weight);
 	void HandReset();

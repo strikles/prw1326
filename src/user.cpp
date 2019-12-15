@@ -177,6 +177,7 @@ DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery)
 		g_board_texture->CalcTexture();
 		g_extract_actions->ExtractActions();
 		//g_opponent_modeling->ModelOpponents();
+
 		GetSymbol("cmd$recalc");
 		double decision = g_decision->Decision();
 		is_busy = false;
@@ -204,12 +205,14 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserve
 			//AllocConsole();
 #endif _DEBUG
 			InitializeOpenHoldemFunctionInterface();
+			DLLOnLoad();
 			break;
 		case DLL_THREAD_ATTACH:
 			break;
 		case DLL_THREAD_DETACH:
 			break;
 		case DLL_PROCESS_DETACH:
+			DLLOnUnLoad();
 #ifdef _DEBUG
 			//FreeConsole();
 #endif _DEBUG

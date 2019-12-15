@@ -177,9 +177,9 @@ void COpponentModeling::Prw1326AddPocketPair(int player_ndx, int r1, int weight)
 	/*
 	adds pocket pair
 	*/
-	for (int p = 0; p < 3; p++)
+	for (int p = 0; p < k_num_suits-1; p++)
 	{
-		for (int k = p + 1; k < 4; k++)
+		for (int k = p + 1; k < k_num_suits; k++)
 		{
 			Prw1326AddListElement(player_ndx, r1, r1, k_prw1326_suit[p], k_prw1326_suit[k], weight);
 		}
@@ -191,9 +191,9 @@ void COpponentModeling::Prw1326AddOffSuit(int player_ndx, int r1, int r2, int we
 	/*
 	adds off suited hand
 	*/
-	for (int p = 0; p < 4; p++)
+	for (int p = 0; p < k_num_suits; p++)
 	{
-		for (int k = 0; k < 4; k++)
+		for (int k = 0; k < k_num_suits; k++)
 		{
 			if (k != p)
 				Prw1326AddListElement(player_ndx, r1, r2, k_prw1326_suit[p], k_prw1326_suit[k], weight);
@@ -206,7 +206,7 @@ void COpponentModeling::Prw1326AddSuit(int player_ndx, int r1, int r2, int weigh
 	/*
 	adds suited hand
 	*/
-	for (int k = 0; k < 4; k++)
+	for (int k = 0; k < k_num_suits; k++)
 	{
 		Prw1326AddListElement(player_ndx, r1, r2, k_prw1326_suit[k], k_prw1326_suit[k], weight);
 	}
@@ -217,9 +217,9 @@ void COpponentModeling::Prw1326GetPocketPair(int player_ndx, int r1)
 	/*
 	adds pocket pair
 	*/
-	for (int p = 0; p < 3; p++)
+	for (int p = 0; p < k_num_suits-1; p++)
 	{
-		for (int k = p + 1; k < 4; k++)
+		for (int k = p + 1; k < k_num_suits; k++)
 		{
 			int ndx = Prw1326GetListElement(player_ndx, r1, r1, k_prw1326_suit[p], k_prw1326_suit[k]);
 			prw1326_preflop[player_ndx].insert(ndx);
@@ -232,9 +232,9 @@ void COpponentModeling::Prw1326GetOffSuit(int player_ndx, int r1, int r2)
 	/*
 	adds off suited hand
 	*/
-	for (int p = 0; p < 4; p++)
+	for (int p = 0; p < k_num_suits; p++)
 	{
-		for (int k = 0; k < 4; k++)
+		for (int k = 0; k < k_num_suits; k++)
 		{
 			if (k != p)
 			{
@@ -250,9 +250,38 @@ void COpponentModeling::Prw1326GetSuit(int player_ndx, int r1, int r2)
 	/*
 	adds suited hand
 	*/
-	for (int k = 0; k < 4; k++)
+	for (int k = 0; k < k_num_suits; k++)
 	{
 		int ndx = Prw1326GetListElement(player_ndx, r1, r2, k_prw1326_suit[k], k_prw1326_suit[k]);
 		prw1326_preflop[player_ndx].insert(ndx);
 	}
+}
+
+int COpponentModeling::ModelOpponent(int chair_ndx, int betround, int action)
+{
+	//opp modeling - move
+	double pt_vpip = g_symbols->_pt.get_pt_vpip(chair_ndx);
+	if (pt_vpip < 0)
+		pt_vpip = 0.4;
+
+	double pt_pfr = g_symbols->_pt.get_pt_pfr(chair_ndx);
+	if (pt_pfr < 0)
+		pt_pfr = 0.15;
+
+	if (ePreflop == betround)
+	{
+		//ePreflopAction preflop_action = g_extract_actions->_current_hand_info._player_actions[chair_ndx].GetPreflopAction(false);
+		if(action == actionCall)
+			PrwSetPreflopMiddleList(chair_ndx, pt_vpip, pt_pfr, 1024);
+		else if(action >= actionBetRaise)
+			PrwSetPreflopTopList(chair_ndx, pt_pfr, 1024);
+	}
+	else
+	{
+		//ePostflopAction postflop_action = g_extract_actions->_current_hand_info._player_actions[chair_ndx].GetPostflopAction(betround);
+		if(action >= actionCall)
+			Prw1326Postflop(chair_ndx, 1024);
+	}
+
+	return 0;
 }
