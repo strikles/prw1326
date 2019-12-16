@@ -58,7 +58,7 @@ void CExtractActions::ExtractPreviousRoundActions()
 				0,
 				balance);
 
-			_opp_model.ModelOpponent(chair_ndx, _prev_betround, actionCheck);
+			//_opp_model.ModelOpponent(chair_ndx, _prev_betround, actionCheck);
 		}
 		// Called
 		else if ( _current_hand_info._player_actions[chair_ndx]._actions[_prev_betround][prev_times_acted]._balance > balance )
@@ -84,8 +84,8 @@ void CExtractActions::ExtractPreviousTimesActedActions()
 	{
 		// VERIFY ME - HU + Dealer Chair
 		int chair_ndx = ndx % g_symbols->get_nchairs();
-		//int stop_chair = (g_symbols->get_dealerchair() + 1) % k_max_chairs;
-		int stop_chair = g_symbols->get_userchair();
+		int stop_chair = (g_symbols->get_dealerchair() + 1) % k_max_chairs;
+		//int stop_chair = g_symbols->get_userchair();
 
 		if ( chair_ndx == stop_chair )
 			break;
@@ -117,7 +117,7 @@ void CExtractActions::ExtractPreviousTimesActedActions()
 				0,
 				balance);
 
-			_opp_model.ModelOpponent(chair_ndx, betround, actionCheck);
+			//_opp_model.ModelOpponent(chair_ndx, betround, actionCheck);
 		}
 		// Call
 		else if ( IsEqual(current_bet, _current_hand_info._amount_to_call[betround] ) ||
@@ -193,7 +193,7 @@ void CExtractActions::ExtractCurrentActions()
 				0,
 				balance);
 
-			_opp_model.ModelOpponent(chair_ndx, betround, actionCheck);
+			//_opp_model.ModelOpponent(chair_ndx, betround, actionCheck);
 		}
 		// Call - player may have less than call amount and go all-in
 		else if ( ( IsEqual(current_bet, _current_hand_info._amount_to_call[betround]) && 
