@@ -40,7 +40,7 @@ static const char* ctonum = "23456789TJQKA";
 static const char* str_suits = "hcds";
 static const char* str_action[] = { " *", " F", " s", " b", " C", " X", " R" };
 static const char* str_rounds[] = { "Unknown\n", "Preflop\n", "Flop\n", "Turn\n", "River\n" };
-static const char* str_player_action[] = { "Unknown Action", "Folds", "SB", "BB", "Calls", "Checks", "Bets" };
+static const char* str_player_action[] = { "Unknown Action", "Folds", "SB", "BB", "Checks", "Calls", "Bets" };
 
 ////////////
 // Enums
