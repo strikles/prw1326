@@ -84,7 +84,7 @@ void CExtractActions::ExtractPreviousTimesActedActions()
 	{
 		// VERIFY ME - HU + Dealer Chair
 		int chair_ndx = ndx % g_symbols->get_nchairs();
-		int stop_chair = (g_symbols->get_dealerchair() + 1) % k_max_chairs;
+		int stop_chair = (g_symbols->get_dealerchair() + 1) % g_symbols->get_nchairs();
 		//int stop_chair = g_symbols->get_userchair();
 
 		if ( chair_ndx == stop_chair )
