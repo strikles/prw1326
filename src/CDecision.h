@@ -22,6 +22,8 @@ public:
 	double PreflopDecision();
 	double postFlopDecision();
 	double Decision();
+	double GetDecisionAmount(double action_constant);
+	ePlayerAction GetPlayerAction(double action_constant);
 };
 
 extern CDecision* g_decision;
