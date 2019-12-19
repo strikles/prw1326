@@ -57,9 +57,9 @@ double CDecision::PreflopDecision()
 	// late position
 
 	// blinds
-	double decision = 0.0;
+	double decision		= 0;
 
-	double phr			= (169.0 - g_symbols->get_handrank169() + 1.0)/169.0;
+	double phr			= (170.0 - g_symbols->get_handrank169())/169.0;
 	double current_bet	= g_symbols->get_currentbet(g_symbols->get_userchair());
 	double balance		= g_symbols->get_balance(g_symbols->get_userchair());
 	double call			= g_symbols->get_call();
@@ -112,7 +112,7 @@ double CDecision::PreflopDecision()
 
 double CDecision::postFlopDecision()
 {
-	double decision		= 0.0;
+	double decision		= 0;
 	double current_bet	= g_symbols->get_currentbet(g_symbols->get_userchair());
 	double balance		= g_symbols->get_balance(g_symbols->get_userchair());
 	double call			= g_symbols->get_call();
@@ -132,8 +132,8 @@ double CDecision::postFlopDecision()
 		inv, 
 		prwin - inv);
 
-	double monster_prwin = g_symbols->get_nplayersplaying() <= 6 ? 0.34 : 0.42;
-	double bluff_prwin = g_symbols->get_nplayersplaying() == 2 ? 0.1 : 0.15;
+	double monster_prwin	= g_symbols->get_nplayersplaying() <= 6 ? 0.34 : 0.42;
+	double bluff_prwin		= g_symbols->get_nplayersplaying() == 2 ? 0.1 : 0.15;
 
 	if (monster_prwin < (prwin - inv))
 	{
@@ -166,15 +166,17 @@ double CDecision::postFlopDecision()
 
 double CDecision::GetDecisionAmount(double action_constant)
 {
-	double current_bet = g_symbols->get_currentbet(g_symbols->get_userchair());
-	double balance = g_symbols->get_balance(g_symbols->get_userchair());
-	double call = g_symbols->get_call();
-	double pot = g_symbols->get_pot();
-	double bblind = g_symbols->get_bblind();
+	double current_bet	= g_symbols->get_currentbet(g_symbols->get_userchair());
+	double balance		= g_symbols->get_balance(g_symbols->get_userchair());
+	double call			= g_symbols->get_call();
+	double pot			= g_symbols->get_pot();
+	double bblind		= g_symbols->get_bblind();
 
-	double amount = .0;
-	if (action_constant > 0)
-		amount = action_constant;
+	double amount = 0;
+	if (IsEqual(action_constant, 0))
+		amount = current_bet;
+	else if (action_constant > 0)
+		amount = current_bet + call + action_constant*bblind;
 	else if (IsEqual(action_constant, GetSymbol("RaiseMax")))
 		amount = current_bet + balance;
 	else if (IsEqual(action_constant, GetSymbol("RaiseTwoPot")))
@@ -193,10 +195,19 @@ double CDecision::GetDecisionAmount(double action_constant)
 
 ePlayerAction CDecision::GetPlayerAction(double action_constant)
 {
-	double call = g_symbols->get_call();
 	ePlayerAction eDecision = actionFold;
-
-	if (action_constant > 0 ||
+	if (IsEqual(action_constant, 0))
+	{
+		if (IsEqual(g_symbols->get_call(), 0))
+			eDecision = actionCheck;
+	}
+	else if (IsEqual(action_constant, GetSymbol("Call")))
+	{
+		eDecision = actionCall;
+		if (IsEqual(g_symbols->get_call(), 0))
+			eDecision = actionCheck;
+	}
+	else if (action_constant > 0 ||
 		IsEqual(action_constant, GetSymbol("RaiseMax")) ||
 		IsEqual(action_constant, GetSymbol("RaiseTwoPot")) ||
 		IsEqual(action_constant, GetSymbol("RaisePot")) ||
@@ -205,22 +216,13 @@ ePlayerAction CDecision::GetPlayerAction(double action_constant)
 	{
 		eDecision = actionBetRaise;
 	}
-	else if (IsEqual(action_constant, GetSymbol("Call")))
-	{
-		if (IsEqual(call, 0))
-			eDecision = actionCheck;
-		else
-			eDecision = actionCall;
-	}
 
 	return eDecision;
 }
 
 double CDecision::Decision()
 {
-	double balance = g_symbols->get_balance(g_symbols->get_userchair());
-	double call = g_symbols->get_call();
-
+	_decision = 0;
 	switch (g_symbols->get_betround())
 	{
 		case ePreflop:
@@ -244,7 +246,7 @@ double CDecision::Decision()
 		g_symbols->get_userchair(),
 		GetPlayerAction(_decision),
 		GetDecisionAmount(_decision),
-		balance);
+		g_symbols->get_balance(g_symbols->get_userchair()));
 
 	return _decision;
 }
