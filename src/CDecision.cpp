@@ -71,79 +71,40 @@ double CDecision::PreflopDecision()
 
 	g_log->WriteLog(eSeverityInfo, eCatDecision, "phr:%f\n", phr);
 
-	if(2 < nplayers)
+	// 88+ 0.964 2pl
+	// 88+ 0.887 6pl
+	if (0.964 < phr)
 	{
-		// 88+ 0.964 2pl
-		// 88+ 0.887 6pl
-		if (0.887 < phr)
+		if (times_acted <= 2)
 		{
-			if (times_acted <= 2)
-			{
-				decision = call + max(pot, 4 * bblind);
-			}
-			else
-			{
-				decision = balance;
-			}
+			decision = (pot > 4*bblind ? GetSymbol("RaisePot") : GetSymbol("RaiseMin"));
 		}
-		// 55+ 0.863 2pl
-		// 55+ 0.704 6pl
-		else if (0.704 < phr && call <= 13 * bblind)
+		else
 		{
-			if (times_acted == 0 && IsEqual(call, .0))
-			{
-				decision = call + max(pot, 4 * bblind);
-			}
-			else
-			{
-				decision = call;
-			}
+			decision = GetSymbol("RaiseMax");
 		}
 	}
-	else if(2 == nplayers)
+	// 55+ 0.863 2pl
+	// 55+ 0.704 6pl
+	else if (0.863 < phr && call <= 13 * bblind)
 	{
-		/*
-		if (0 < allinExpectedValue(g_symbols->get_headsupchair()) && balance < 50*bblind)
+		if (times_acted == 0 && IsEqual(call, .0))
 		{
-			decision = balance;
+			decision = (pot > 4*bblind ? GetSymbol("RaisePot") : GetSymbol("RaiseMin"));
 		}
-		*/
-		// 88+ 0.964 2pl
-		// 88+ 0.887 6pl
-		if (0.964 < phr)
+		else
 		{
-			if (times_acted <= 2)
-			{
-				decision = call + max(pot, 4 * bblind);
-			}
-			else
-			{
-				decision = balance;
-			}
+			decision = GetSymbol("Call");
 		}
-		// 55+ 0.863 2pl
-		// 55+ 0.704 6pl
-		else if (0.863 < phr && call <= 13 * bblind)
-		{
-			if (times_acted == 0 && IsEqual(call, .0))
-			{
-				decision = call + max(pot, 4 * bblind);
-			}
-			else
-			{
-				decision = call;
-			}
-		}
-		// 22+ 0.526 2pl
-		// 22+ 0.473 6pl
-		else if (0.526 < phr && call <= 4*bblind)
-		{
-			decision = call;
-		}
+	}
+	// 22+ 0.526 2pl
+	// 22+ 0.473 6pl
+	else if (0.526 < phr && call <= 4*bblind)
+	{
+		decision = GetSymbol("Call");
 	}
 
 	_gotcaught = false, _ibluffed = false;
-	decision = current_bet + min(balance, decision);
 	g_log->WriteLog(eSeverityInfo, eCatDecision, ">>> PreFlop decision -> %g\n", decision);
 
 	return decision;
@@ -174,48 +135,91 @@ double CDecision::postFlopDecision()
 	double monster_prwin = g_symbols->get_nplayersplaying() <= 6 ? 0.34 : 0.42;
 	double bluff_prwin = g_symbols->get_nplayersplaying() == 2 ? 0.1 : 0.15;
 
-	/*
-	if (0 < allinExpectedValue(g_symbols->get_headsupchair()) && g_symbols->get_nplayersplaying() == 2 && balance < 50*bblind)
-	{
-		decision = balance;
-	}
-	*/
 	if (monster_prwin < (prwin - inv))
 	{
 		if (times_acted <= 2)
-			decision = call + max(min_bet, pot);
+			decision = (pot > 4 * bblind ? GetSymbol("RaisePot") : GetSymbol("RaiseMin"));
 		else
-			decision = balance;
+			decision = GetSymbol("RaiseMax");
 	}
 	else if (bluff_prwin < (prwin - inv))
 	{
 		if (false == _gotcaught && IsEqual(0, call) && times_acted == 0)
 		{
-			decision = call + max(min_bet, pot/2);
+			decision = GetSymbol("RaiseHalfPot");
 			_ibluffed = true;
 		}
 		else if (call < callExpectedValue())
 		{
-			decision = call;
+			decision = GetSymbol("Call");
 		}
 	}
 	else if (call < callExpectedValue())
 	{
-		decision = call;
+		decision = GetSymbol("Call");
 	}
 
-	decision = current_bet + min(balance, decision);
 	g_log->WriteLog(eSeverityInfo, eCatDecision, ">>> PostFlop decision -> %g\n", decision);
 
 	return decision;
 }
 
+double CDecision::GetDecisionAmount(double action_constant)
+{
+	double current_bet = g_symbols->get_currentbet(g_symbols->get_userchair());
+	double balance = g_symbols->get_balance(g_symbols->get_userchair());
+	double call = g_symbols->get_call();
+	double pot = g_symbols->get_pot();
+	double bblind = g_symbols->get_bblind();
+
+	double amount = .0;
+	if (action_constant > 0)
+		amount = action_constant;
+	else if (IsEqual(action_constant, GetSymbol("RaiseMax")))
+		amount = current_bet + balance;
+	else if (IsEqual(action_constant, GetSymbol("RaiseTwoPot")))
+		amount = current_bet + call + 2*pot;
+	else if (IsEqual(action_constant, GetSymbol("RaisePot")))
+		amount = current_bet + call + pot;
+	else if (IsEqual(action_constant, GetSymbol("RaiseHalfPot")))
+		amount = current_bet + call + pot/2;
+	else if (IsEqual(action_constant, GetSymbol("RaiseMin")))
+		amount = current_bet + call + max(2*call, bblind);
+	else if (IsEqual(action_constant, GetSymbol("Call")))
+		amount = current_bet + call;
+
+	return amount;
+}
+
+ePlayerAction CDecision::GetPlayerAction(double action_constant)
+{
+	double call = g_symbols->get_call();
+	ePlayerAction eDecision = actionFold;
+
+	if (action_constant > 0 ||
+		IsEqual(action_constant, GetSymbol("RaiseMax")) ||
+		IsEqual(action_constant, GetSymbol("RaiseTwoPot")) ||
+		IsEqual(action_constant, GetSymbol("RaisePot")) ||
+		IsEqual(action_constant, GetSymbol("RaiseHalfPot")) ||
+		IsEqual(action_constant, GetSymbol("RaiseMin")))
+	{
+		eDecision = actionBetRaise;
+	}
+	else if (IsEqual(action_constant, GetSymbol("Call")))
+	{
+		if (IsEqual(call, 0))
+			eDecision = actionCheck;
+		else
+			eDecision = actionCall;
+	}
+
+	return eDecision;
+}
+
 double CDecision::Decision()
 {
-	double current_bet	= g_symbols->get_currentbet(g_symbols->get_userchair());
-	double balance		= g_symbols->get_balance(g_symbols->get_userchair());
-	double call			= g_symbols->get_call();
-	double bblind		= g_symbols->get_bblind();
+	double balance = g_symbols->get_balance(g_symbols->get_userchair());
+	double call = g_symbols->get_call();
 
 	switch (g_symbols->get_betround())
 	{
@@ -235,35 +239,12 @@ double CDecision::Decision()
 			break;
 	}
 
-	// Record Bot Decision to set _current_actor in CHandHistory, etc...
-	ePlayerAction eDecision = actionFold;
-	if (IsEqual(_decision, current_bet))
-	{
-		if (IsEqual(call , 0))
-			eDecision = actionCheck;
-		else
-			eDecision = actionFold;
-	}
-	else if (IsEqual(call + current_bet, _decision))
-		eDecision = actionCall;
-	else
-		eDecision = actionBetRaise;
-
+	// Record Bot Decision to set _current_actor in CHandHistory
 	g_extract_actions->_current_hand_info.RecordPlayerAction(g_symbols->get_betround(),
 		g_symbols->get_userchair(),
-		eDecision,
-		_decision,
+		GetPlayerAction(_decision),
+		GetDecisionAmount(_decision),
 		balance);
-
-	// heads-up
-	if(g_symbols->get_nplayersplaying() == 2)
-	{
-		g_log->WriteLog(eSeverityError, eCatDecision, ">>> Decision -> %s [Call:%g All-In EV:%g Prwin:%g]\n",
-			str_player_action[eDecision],
-			call,
-			allinExpectedValue(g_symbols->get_headsupchair()),
-			g_symbols->get_prwin());
-	}
 
 	return _decision;
 }
