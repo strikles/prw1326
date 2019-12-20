@@ -46,7 +46,7 @@ void CExtractActions::ExtractPreviousRoundActions()
 			_current_hand_info.RecordPlayerAction(_prev_betround,
 				chair_ndx,
 				actionFold,
-				0,
+				_current_hand_info._player_actions[chair_ndx]._prev_bet[_prev_betround],
 				balance);
 		}
 		// Checked
@@ -55,7 +55,7 @@ void CExtractActions::ExtractPreviousRoundActions()
 			_current_hand_info.RecordPlayerAction(_prev_betround,
 				chair_ndx,
 				actionCheck,
-				0,
+				_current_hand_info._amount_to_call[_prev_betround],
 				balance);
 
 			//_opp_model.ModelOpponent(chair_ndx, _prev_betround, actionCheck);
@@ -104,7 +104,7 @@ void CExtractActions::ExtractPreviousTimesActedActions()
 			_current_hand_info.RecordPlayerAction(betround,
 				chair_ndx,
 				actionFold,
-				0,
+				_current_hand_info._player_actions[chair_ndx]._prev_bet[betround],
 				balance);
 		}
 		// Checked
@@ -114,7 +114,7 @@ void CExtractActions::ExtractPreviousTimesActedActions()
 			_current_hand_info.RecordPlayerAction(betround,
 				chair_ndx,
 				actionCheck,
-				0,
+				_current_hand_info._amount_to_call[betround],
 				balance);
 
 			//_opp_model.ModelOpponent(chair_ndx, betround, actionCheck);
@@ -180,7 +180,7 @@ void CExtractActions::ExtractCurrentActions()
 			_current_hand_info.RecordPlayerAction(betround,
 				chair_ndx,
 				actionFold,
-				0,
+				current_bet,
 				balance);
 		}
 		// Checked
@@ -190,7 +190,7 @@ void CExtractActions::ExtractCurrentActions()
 			_current_hand_info.RecordPlayerAction(betround,
 				chair_ndx,
 				actionCheck,
-				0,
+				current_bet,
 				balance);
 
 			//_opp_model.ModelOpponent(chair_ndx, betround, actionCheck);
