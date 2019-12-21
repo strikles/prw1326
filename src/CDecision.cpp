@@ -143,7 +143,7 @@ double CDecision::postFlopDecision()
 	{
 		if (times_acted == 0)
 			decision = (min_bet > bblind ? GetSymbol("RaiseHalfPot") : GetSymbol("RaiseMin"));
-		if (times_acted == 1)
+		else if (times_acted == 1)
 			decision = GetSymbol("RaiseTwoPot");
 		else
 			decision = GetSymbol("RaiseMax");
