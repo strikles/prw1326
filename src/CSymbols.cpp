@@ -180,6 +180,11 @@ void CSymbols::UpdateOHSymbols()
 	dirty_raischair();
 	dirty_userchair();
 
+	dirty_didcall();
+	dirty_didchec();
+	dirty_didrais();
+	dirty_didbetsize();
+
 
 	/////////////////////////////
 	// unsigned int vars
@@ -290,13 +295,9 @@ void CSymbols::UpdateOHSymbols()
 		/////////////////////////////
 		// bool round vars
 		/////////////////////////////
-		dirty_didcall(i);
 		dirty_didcallround(i);
-		dirty_didchec(i);
 		dirty_didchecround(i);
-		dirty_didrais(i);
 		dirty_didraisround(i);
-		dirty_didbetsize(i);
 		dirty_didbetsizeround(i);
 	}
 

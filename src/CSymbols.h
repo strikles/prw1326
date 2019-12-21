@@ -285,13 +285,13 @@ class CSymbols
 	/////////////////////////////
 	// bool round vars
 	/////////////////////////////
-	OH_ROUND_VAR_BOOL(didcall);
+	OH_VAR_INT(didcall);
 	OH_ROUND_VAR_BOOL(didcallround);
-	OH_ROUND_VAR_BOOL(didchec);
+	OH_VAR_INT(didchec);
 	OH_ROUND_VAR_BOOL(didchecround);
-	OH_ROUND_VAR_BOOL(didrais);
+	OH_VAR_INT(didrais);
 	OH_ROUND_VAR_BOOL(didraisround);
-	OH_ROUND_VAR_BOOL(didbetsize);
+	OH_VAR_INT(didbetsize);
 	OH_ROUND_VAR_BOOL(didbetsizeround);
 
 

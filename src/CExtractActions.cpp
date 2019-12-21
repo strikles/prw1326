@@ -240,16 +240,16 @@ void CExtractActions::ExtractActionsNewGame()
 	if(g_symbols->get_smallblindchair() != k_undefined)
 	{
 		_current_hand_info.RecordPlayerAction(g_symbols->get_betround(),
-											g_symbols->get_smallblindchair(),
-											actionPostedSB,
-											g_symbols->get_sblind(),
-											g_symbols->get_balance(g_symbols->get_smallblindchair()));
+			g_symbols->get_smallblindchair(),
+			actionPostedSB,
+			g_symbols->get_sblind(),
+			g_symbols->get_balance(g_symbols->get_smallblindchair()));
 	}
 	_current_hand_info.RecordPlayerAction(g_symbols->get_betround(),
-										g_symbols->get_bigblindchair(),
-										actionPostedBB,
-										g_symbols->get_bblind(),
-										g_symbols->get_balance(g_symbols->get_bigblindchair()));
+		g_symbols->get_bigblindchair(),
+		actionPostedBB,
+		g_symbols->get_bblind(),
+		g_symbols->get_balance(g_symbols->get_bigblindchair()));
 
 	//////////////////////////////////
 	// Remaining actions up to hero //

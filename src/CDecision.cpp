@@ -16,10 +16,10 @@ void CDecision::HandReset()
 
 int CDecision::timesActed()
 {
-	return g_symbols->get_didcall(g_symbols->get_betround()) +
-		g_symbols->get_didchec(g_symbols->get_betround()) +
-		g_symbols->get_didrais(g_symbols->get_betround()) +
-		g_symbols->get_didbetsize(g_symbols->get_betround());
+	return g_symbols->get_didcall() +
+		g_symbols->get_didchec() +
+		g_symbols->get_didrais() +
+		g_symbols->get_didbetsize();
 }
 
 double CDecision::callExpectedValue()
@@ -75,9 +75,13 @@ double CDecision::PreflopDecision()
 	// 88+ 0.887 6pl
 	if (0.964 < phr)
 	{
-		if (times_acted <= 2)
+		if (times_acted == 0)
 		{
-			decision = (pot > 4*bblind ? GetSymbol("RaisePot") : GetSymbol("RaiseMin"));
+			decision = (min_bet > 4*bblind ? GetSymbol("RaisePot") : 4);
+		}
+		else if(times_acted == 1)
+		{
+			decision = GetSymbol("RaiseTwoPot");
 		}
 		else
 		{
@@ -90,7 +94,7 @@ double CDecision::PreflopDecision()
 	{
 		if (times_acted == 0 && IsEqual(call, .0))
 		{
-			decision = (pot > 4*bblind ? GetSymbol("RaisePot") : GetSymbol("RaiseMin"));
+			decision = (min_bet > 4*bblind ? GetSymbol("RaisePot") : 4);
 		}
 		else
 		{
@@ -137,14 +141,16 @@ double CDecision::postFlopDecision()
 
 	if (monster_prwin < (prwin - inv))
 	{
-		if (times_acted <= 2)
-			decision = (pot > 4 * bblind ? GetSymbol("RaisePot") : GetSymbol("RaiseMin"));
+		if (times_acted == 0)
+			decision = (min_bet > bblind ? GetSymbol("RaiseHalfPot") : GetSymbol("RaiseMin"));
+		if (times_acted == 1)
+			decision = GetSymbol("RaiseTwoPot");
 		else
 			decision = GetSymbol("RaiseMax");
 	}
 	else if (bluff_prwin < (prwin - inv))
 	{
-		if (false == _gotcaught && IsEqual(0, call) && times_acted == 0)
+		if (times_acted == 0 && IsEqual(0, call) && false == _gotcaught)
 		{
 			decision = GetSymbol("RaiseHalfPot");
 			_ibluffed = true;

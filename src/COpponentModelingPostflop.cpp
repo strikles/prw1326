@@ -250,5 +250,5 @@ void COpponentModeling::Prw1326PostflopNaive(int player_ndx, int weight)
 
 void COpponentModeling::Prw1326Postflop(int player_ndx, int weight)
 {
-	Prw1326PostflopFiltered(player_ndx, weight);
+	Prw1326PostflopNaive(player_ndx, weight);
 }
