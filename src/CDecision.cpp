@@ -77,11 +77,11 @@ double CDecision::PreflopDecision()
 	{
 		if (times_acted == 0)
 		{
-			decision = (min_bet > 4*bblind ? GetSymbol("RaisePot") : 4);
+			decision = (min_bet > 4*bblind ? GetSymbol("RaisePot") : 5);
 		}
 		else if(times_acted == 1)
 		{
-			decision = GetSymbol("RaiseTwoPot");
+			decision = GetSymbol("RaisePot");
 		}
 		else
 		{
@@ -94,7 +94,7 @@ double CDecision::PreflopDecision()
 	{
 		if (times_acted == 0 && IsEqual(call, .0))
 		{
-			decision = (min_bet > 4*bblind ? GetSymbol("RaisePot") : 4);
+			decision = (min_bet > 4*bblind ? GetSymbol("RaisePot") : 5);
 		}
 		else
 		{
@@ -109,7 +109,7 @@ double CDecision::PreflopDecision()
 	}
 
 	_gotcaught = false, _ibluffed = false;
-	g_log->WriteLog(eSeverityInfo, eCatDecision, ">>> PreFlop decision -> %g\n", decision);
+	g_log->WriteLog(eSeverityInfo, eCatDecision, ">>> PreFlop decision -> %f\n", decision);
 
 	return decision;
 }
@@ -136,36 +136,40 @@ double CDecision::postFlopDecision()
 		inv, 
 		prwin - inv);
 
-	double monster_prwin	= g_symbols->get_nplayersplaying() <= 6 ? 0.34 : 0.42;
-	double bluff_prwin		= g_symbols->get_nplayersplaying() == 2 ? 0.1 : 0.15;
+	double monster_prwin	= (g_symbols->get_nplayersplaying() <= 6 ? 0.34 : 0.42);
+	double bluff_prwin		= (g_symbols->get_nplayersplaying() == 2 ? 0.1 : 0.15);
+	double call_ev = callExpectedValue();
 
 	if (monster_prwin < (prwin - inv))
 	{
+		g_log->WriteLog(eSeverityInfo, eCatDecision, "Monster zone\n");
+
 		if (times_acted == 0)
-			decision = (min_bet > bblind ? GetSymbol("RaiseHalfPot") : GetSymbol("RaiseMin"));
+			decision = (min_bet > bblind ? GetSymbol("RaiseHalfPot") : 5);
 		else if (times_acted == 1)
-			decision = GetSymbol("RaiseTwoPot");
+			decision = GetSymbol("RaisePot");
 		else
 			decision = GetSymbol("RaiseMax");
 	}
 	else if (bluff_prwin < (prwin - inv))
 	{
-		if (times_acted == 0 && IsEqual(0, call) && false == _gotcaught)
+		g_log->WriteLog(eSeverityInfo, eCatDecision, "Bluff zone\n");
+		if (times_acted == 0)
 		{
 			decision = GetSymbol("RaiseHalfPot");
 			_ibluffed = true;
 		}
-		else if (call < callExpectedValue())
+		else if (call < call_ev)
 		{
 			decision = GetSymbol("Call");
 		}
 	}
-	else if (call < callExpectedValue())
+	else if (call < call_ev)
 	{
 		decision = GetSymbol("Call");
 	}
 
-	g_log->WriteLog(eSeverityInfo, eCatDecision, ">>> PostFlop decision -> %g\n", decision);
+	g_log->WriteLog(eSeverityInfo, eCatDecision, ">>> PostFlop decision -> %f times acted:%d\n", decision, times_acted);
 
 	return decision;
 }
@@ -182,7 +186,7 @@ double CDecision::GetDecisionAmount(double action_constant)
 	if (IsEqual(action_constant, 0))
 		amount = current_bet;
 	else if (action_constant > 0)
-		amount = current_bet + call + action_constant*bblind;
+		amount = action_constant*bblind;
 	else if (IsEqual(action_constant, GetSymbol("RaiseMax")))
 		amount = current_bet + balance;
 	else if (IsEqual(action_constant, GetSymbol("RaiseTwoPot")))
