@@ -73,7 +73,7 @@ double CDecision::PreflopDecision()
 
 	// 88+ 0.964 2pl
 	// 88+ 0.887 6pl
-	if (0.964 < phr)
+	if (0.887 < phr)
 	{
 		if (times_acted == 0)
 		{
@@ -90,7 +90,7 @@ double CDecision::PreflopDecision()
 	}
 	// 55+ 0.863 2pl
 	// 55+ 0.704 6pl
-	else if (0.863 < phr && call <= 13 * bblind)
+	else if (0.704 < phr && call <= 13 * bblind)
 	{
 		if (times_acted == 0 && IsEqual(call, .0))
 		{
@@ -103,11 +103,12 @@ double CDecision::PreflopDecision()
 	}
 	// 22+ 0.526 2pl
 	// 22+ 0.473 6pl
-	else if (0.526 < phr && call <= 4*bblind)
+	/*
+	else if (0.473 < phr && call <= 4*bblind)
 	{
 		decision = GetSymbol("Call");
 	}
-
+	*/
 	_gotcaught = false, _ibluffed = false;
 	g_log->WriteLog(eSeverityInfo, eCatDecision, ">>> PreFlop decision -> %f\n", decision);
 
@@ -164,9 +165,13 @@ double CDecision::postFlopDecision()
 			decision = GetSymbol("Call");
 		}
 	}
-	else if (call < call_ev)
+	else if (0 < (prwin - inv))
 	{
-		decision = GetSymbol("Call");
+		g_log->WriteLog(eSeverityInfo, eCatDecision, "Twilight zone\n");
+		if (call < call_ev)
+		{
+			decision = GetSymbol("Call");
+		}
 	}
 
 	g_log->WriteLog(eSeverityInfo, eCatDecision, ">>> PostFlop decision -> %f times acted:%d\n", decision, times_acted);
