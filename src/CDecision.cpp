@@ -155,7 +155,7 @@ double CDecision::postFlopDecision()
 	else if (bluff_prwin < (prwin - inv))
 	{
 		g_log->WriteLog(eSeverityInfo, eCatDecision, "Bluff zone\n");
-		if (times_acted == 0)
+		if (times_acted == 0 && IsEqual(call, 0) && false == _gotcaught)
 		{
 			decision = GetSymbol("RaiseHalfPot");
 			_ibluffed = true;
