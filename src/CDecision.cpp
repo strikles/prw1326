@@ -77,7 +77,7 @@ double CDecision::PreflopDecision()
 	{
 		if (times_acted == 0)
 		{
-			decision = (min_bet > 4*bblind ? GetSymbol("RaisePot") : 5);
+			decision = (min_bet > 5*bblind ? GetSymbol("RaisePot") : 5);
 		}
 		else if(times_acted == 1)
 		{
@@ -94,7 +94,7 @@ double CDecision::PreflopDecision()
 	{
 		if (times_acted == 0 && IsEqual(call, .0))
 		{
-			decision = (min_bet > 4*bblind ? GetSymbol("RaisePot") : 5);
+			decision = (min_bet > 5*bblind ? GetSymbol("RaisePot") : 5);
 		}
 		else
 		{
@@ -109,6 +109,7 @@ double CDecision::PreflopDecision()
 		decision = GetSymbol("Call");
 	}
 	*/
+
 	_gotcaught = false, _ibluffed = false;
 	g_log->WriteLog(eSeverityInfo, eCatDecision, ">>> PreFlop decision -> %f\n", decision);
 
@@ -144,7 +145,6 @@ double CDecision::postFlopDecision()
 	if (monster_prwin < (prwin - inv))
 	{
 		g_log->WriteLog(eSeverityInfo, eCatDecision, "Monster zone\n");
-
 		if (times_acted == 0)
 			decision = (min_bet > bblind ? GetSymbol("RaiseHalfPot") : 5);
 		else if (times_acted == 1)
@@ -165,6 +165,7 @@ double CDecision::postFlopDecision()
 			decision = GetSymbol("Call");
 		}
 	}
+	/*
 	else if (0 < (prwin - inv))
 	{
 		g_log->WriteLog(eSeverityInfo, eCatDecision, "Twilight zone\n");
@@ -173,6 +174,7 @@ double CDecision::postFlopDecision()
 			decision = GetSymbol("Call");
 		}
 	}
+	*/
 
 	g_log->WriteLog(eSeverityInfo, eCatDecision, ">>> PostFlop decision -> %f times acted:%d\n", decision, times_acted);
 
