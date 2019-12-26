@@ -18,52 +18,6 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\libs\pokereval\include\combinations.h" />
-    <ClInclude Include="..\libs\pokereval\include\deck.h" />
-    <ClInclude Include="..\libs\pokereval\include\deck_std.h" />
-    <ClInclude Include="..\libs\pokereval\include\deck_undef.h" />
-    <ClInclude Include="..\libs\pokereval\include\enumdefs.h" />
-    <ClInclude Include="..\libs\pokereval\include\enumerate.h" />
-    <ClInclude Include="..\libs\pokereval\include\enumord.h" />
-    <ClInclude Include="..\libs\pokereval\include\evx_defs.h" />
-    <ClInclude Include="..\libs\pokereval\include\game_std.h" />
-    <ClInclude Include="..\libs\pokereval\include\handval.h" />
-    <ClInclude Include="..\libs\pokereval\include\handval_low.h" />
-    <ClInclude Include="..\libs\pokereval\include\pokereval_export.h" />
-    <ClInclude Include="..\libs\pokereval\include\poker_config.h" />
-    <ClInclude Include="..\libs\pokereval\include\poker_defs.h" />
-    <ClInclude Include="..\libs\pokereval\include\poker_wrapper.h" />
-    <ClInclude Include="..\libs\pokereval\include\rules_std.h" />
-    <ClInclude Include="..\libs\pokereval\include\rules_undef.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\libs\pokereval\lib\combinations.c" />
-    <ClCompile Include="..\libs\pokereval\lib\deck.c" />
-    <ClCompile Include="..\libs\pokereval\lib\deck_std.c" />
-    <ClCompile Include="..\libs\pokereval\lib\enumerate.c" />
-    <ClCompile Include="..\libs\pokereval\lib\enumord.c" />
-    <ClCompile Include="..\libs\pokereval\lib\evx.c" />
-    <ClCompile Include="..\libs\pokereval\lib\poker_wrapper.c" />
-    <ClCompile Include="..\libs\pokereval\lib\rules_std.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_botcard.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_botfivecards.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_botfivecardsj.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_cardmasks.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_evx_flushcards.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_evx_pairval.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_evx_strval.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_evx_tripsval.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_maskrank.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_nbits.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_nbitsandstr.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_straight.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_topbit.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_topcard.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_topfivebits.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_topfivecards.c" />
-    <ClCompile Include="..\libs\pokereval\lib\t_toptwobits.c" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A4DEF05E-E072-493E-B282-84731D60BCF0}</ProjectGuid>
     <RootNamespace>poker-eval</RootNamespace>
@@ -138,7 +92,7 @@
     <ClCompile>
       <AdditionalOptions>/D "_CRT_SECURE_NO_WARNINGS" %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\pokereval\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;POKEREVAL_LIBRARY;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
@@ -150,7 +104,7 @@
       </PrecompiledHeader>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <ResourceCompile>
@@ -178,7 +132,7 @@
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <OmitFramePointers>false</OmitFramePointers>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\pokereval\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;POKEREVAL_LIBRARY;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -238,6 +192,72 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="lib\combinations.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='profile|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="lib\deck.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='profile|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="lib\deck_std.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='profile|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="lib\enumerate.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='profile|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="lib\enumord.c" />
+    <ClCompile Include="lib\evx.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='profile|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="lib\rules_std.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='profile|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="lib\t_botcard.c" />
+    <ClCompile Include="lib\t_botfivecards.c" />
+    <ClCompile Include="lib\t_botfivecardsj.c" />
+    <ClCompile Include="lib\t_cardmasks.c" />
+    <ClCompile Include="lib\t_evx_flushcards.c" />
+    <ClCompile Include="lib\t_evx_pairval.c" />
+    <ClCompile Include="lib\t_evx_strval.c" />
+    <ClCompile Include="lib\t_evx_tripsval.c" />
+    <ClCompile Include="lib\t_maskrank.c" />
+    <ClCompile Include="lib\t_nbits.c" />
+    <ClCompile Include="lib\t_nbitsandstr.c" />
+    <ClCompile Include="lib\t_straight.c" />
+    <ClCompile Include="lib\t_topbit.c" />
+    <ClCompile Include="lib\t_topcard.c" />
+    <ClCompile Include="lib\t_topfivebits.c" />
+    <ClCompile Include="lib\t_topfivecards.c" />
+    <ClCompile Include="lib\t_toptwobits.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\combinations.h" />
+    <ClInclude Include="include\deck.h" />
+    <ClInclude Include="include\deck_std.h" />
+    <ClInclude Include="include\deck_undef.h" />
+    <ClInclude Include="include\enumdefs.h" />
+    <ClInclude Include="include\enumerate.h" />
+    <ClInclude Include="include\evx_defs.h" />
+    <ClInclude Include="include\game_std.h" />
+    <ClInclude Include="include\handval.h" />
+    <ClInclude Include="include\handval_low.h" />
+    <ClInclude Include="include\poker_defs.h" />
+    <ClInclude Include="include\pokereval_export.h" />
+    <ClInclude Include="include\rules_std.h" />
+    <ClInclude Include="include\rules_undef.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

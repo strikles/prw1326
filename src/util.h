@@ -22,12 +22,13 @@
 * returns count of number of bits set in the given value
 */
 int	bitcount(unsigned int u);
+void showbits(unsigned int x);
 
 /*
 *  Function used to compare doubles
 */
 bool IsEqual(const double a, const double b);
-void showbits(unsigned int x);
+
 char GetRankChar(unsigned char c);
 char GetSuitChar(unsigned char c);
 int  GetNSuited(StdDeck_CardMask hand);

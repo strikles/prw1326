@@ -34,17 +34,9 @@ void COpponentModeling::HandReset()
 		{
 			prw1326_preflop[chair_ndx].erase(prw1326_preflop[chair_ndx].begin());
 		}
-		while (!prw1326_flushes[chair_ndx].empty())
+		while (!prw1326_postflop[chair_ndx].empty())
 		{
-			prw1326_flushes[chair_ndx].erase(prw1326_flushes[chair_ndx].begin());
-		}
-		while (!prw1326_pairs[chair_ndx].empty())
-		{
-			prw1326_pairs[chair_ndx].erase(prw1326_pairs[chair_ndx].begin());
-		}
-		while (!prw1326_straights[chair_ndx].empty())
-		{
-			prw1326_straights[chair_ndx].erase(prw1326_straights[chair_ndx].begin());
+			prw1326_postflop[chair_ndx].erase(prw1326_postflop[chair_ndx].begin());
 		}
 	}
 
@@ -152,7 +144,7 @@ int COpponentModeling::Prw1326GetListElement(int player_ndx, int r1, int r2, int
 	return found_num;
 }
 
-void COpponentModeling::Prw1326ChangeWeightOnList(int player_ndx, int old_weight, int new_weight)
+void COpponentModeling::Prw1326ChangeWeightOnList(int player_ndx, int new_weight)
 {
 	/*
 	changes all hands with old_weight to new_weight
@@ -259,17 +251,17 @@ void COpponentModeling::Prw1326GetSuit(int player_ndx, int r1, int r2)
 
 int COpponentModeling::ModelOpponent(int chair_ndx, int betround, int action)
 {
-	//opp modeling - move
-	double pt_vpip = g_symbols->_pt.get_pt_vpip(chair_ndx);
-	if (pt_vpip < 0)
-		pt_vpip = 0.4;
-
-	double pt_pfr = g_symbols->_pt.get_pt_pfr(chair_ndx);
-	if (pt_pfr < 0)
-		pt_pfr = 0.15;
-
 	if (ePreflop == betround)
 	{
+		//opp modeling - move
+		double pt_vpip = g_symbols->_pt.get_pt_vpip(chair_ndx);
+		if (pt_vpip < 0)
+			pt_vpip = 0.4;
+
+		double pt_pfr = g_symbols->_pt.get_pt_pfr(chair_ndx);
+		if (pt_pfr < 0)
+			pt_pfr = 0.15;
+
 		//ePreflopAction preflop_action = g_extract_actions->_current_hand_info._player_actions[chair_ndx].GetPreflopAction(false);
 		if(action == actionCall)
 			PrwSetPreflopMiddleList(chair_ndx, pt_vpip, pt_pfr, 1024);

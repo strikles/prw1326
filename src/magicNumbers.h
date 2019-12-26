@@ -37,7 +37,7 @@ const int k_prw1326_suit[4] = { 0, 13, 26, 39 };
 const int k_exponents[11] = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024 };
 
 static const char* ctonum = "23456789TJQKA";
-static const char* str_suits = "hcds";
+static const char* str_suits = "hdcs";
 static const char* str_action[] = { " *", " F", " s", " b", " C", " X", " R" };
 static const char* str_rounds[] = { "Unknown\n", "Preflop\n", "Flop\n", "Turn\n", "River\n" };
 static const char* str_player_action[] = { "Unknown Action", "Folds", "SB", "BB", "Checks", "Calls", "Bets" };
