@@ -744,6 +744,13 @@ void COpponentModeling::PrwSetPreflopTopList(int listnum, double play_pct, int w
 	//169. 32o
 	if (include > 1306) { Prw1326GetOffSuit(listnum, 1, 0); }
 
+	// reset
+	Prw1326ChangeWeightOnList(listnum, 128);
+	// set weights
+	for (size_t ndx = 0; ndx < prw1326_preflop[listnum].size(); ndx++)
+	{
+		_prw1326->chair[listnum].weight[ndx] = weight;
+	}
 }
 
 void COpponentModeling::PrwSetPreflopMiddleList(int listnum, double play_pct, double exclude_pct, int weight)
@@ -1123,7 +1130,14 @@ void COpponentModeling::PrwSetPreflopMiddleList(int listnum, double play_pct, do
 	if (include > 1294 && 1295 > exclude) { Prw1326GetOffSuit(listnum, 2, 0); }
 	//169. 32o
 	if (include > 1306 && 1307 > exclude) { Prw1326GetOffSuit(listnum, 1, 0); }
-	
+
+	// reset
+	Prw1326ChangeWeightOnList(listnum, 128);
+	// set weights
+	for (size_t ndx = 0; ndx < prw1326_preflop[listnum].size(); ndx++)
+	{
+		_prw1326->chair[listnum].weight[ndx] = weight;
+	}
 }
 
 void COpponentModeling::PrwSetPreflopBottomList(int listnum, double exclude_pct, int weight)

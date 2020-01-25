@@ -247,7 +247,7 @@ void COpponentModeling::Prw1326PostflopOR(int player_ndx, int weight)
 
 void COpponentModeling::Prw1326Postflop(int player_ndx, int weight)
 {
-	Prw1326PostflopOR(player_ndx, weight);
+	Prw1326PostflopAND(player_ndx, weight);
 }
 
 void COpponentModeling::Prw1326PostFlopRerank(int player_ndx)

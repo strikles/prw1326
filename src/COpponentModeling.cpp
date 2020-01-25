@@ -249,7 +249,7 @@ void COpponentModeling::Prw1326GetSuit(int player_ndx, int r1, int r2)
 	}
 }
 
-int COpponentModeling::ModelOpponent(int chair_ndx, int betround, int action)
+int COpponentModeling::ModelOpponent(int chair_ndx, int betround, ePlayerAction action)
 {
 	if (ePreflop == betround)
 	{
