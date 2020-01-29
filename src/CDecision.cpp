@@ -77,7 +77,7 @@ double CDecision::PreflopDecision()
 	{
 		if (times_acted == 0)
 		{
-			decision = (min_bet > 5*bblind ? GetSymbol("RaisePot") : 5);
+			decision = (pot > 5*bblind ? GetSymbol("RaisePot") : 5);
 		}
 		else if(times_acted == 1)
 		{
@@ -94,7 +94,7 @@ double CDecision::PreflopDecision()
 	{
 		if (times_acted == 0 && IsEqual(call, .0))
 		{
-			decision = (min_bet > 5*bblind ? GetSymbol("RaisePot") : 5);
+			decision = (pot > 5*bblind ? GetSymbol("RaisePot") : 5);
 		}
 		else
 		{
@@ -146,7 +146,7 @@ double CDecision::postFlopDecision()
 	{
 		g_log->WriteLog(eSeverityInfo, eCatDecision, "Monster zone\n");
 		if (times_acted == 0)
-			decision = (min_bet > bblind ? GetSymbol("RaiseHalfPot") : 5);
+			decision = (pot > 10*bblind ? GetSymbol("RaiseHalfPot") : 5);
 		else if (times_acted == 1)
 			decision = GetSymbol("RaisePot");
 		else

@@ -264,7 +264,7 @@ int COpponentModeling::ModelOpponent(int chair_ndx, int betround, ePlayerAction 
 
 		//ePreflopAction preflop_action = g_extract_actions->_current_hand_info._player_actions[chair_ndx].GetPreflopAction(false);
 		if(action == actionCall)
-			PrwSetPreflopMiddleList(chair_ndx, pt_vpip, pt_pfr, 1024);
+			PrwSetPreflopTopList(chair_ndx, pt_vpip, 1024);
 		else if(action >= actionBetRaise)
 			PrwSetPreflopTopList(chair_ndx, pt_pfr, 1024);
 	}
