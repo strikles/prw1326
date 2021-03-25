@@ -37,10 +37,6 @@
 
 
 
-##f$prefold##
-
-
-
 ##f$chat##
 
 
@@ -62,12 +58,13 @@
 0
 
 
-##f$ini_function_on_my_turn##
-isfinalanswer ? me_st_dec_f$dlldecision : 0
-
-
 ##f$ini_function_on_heartbeat##
 0
+
+
+##f$ini_function_on_my_turn##
+//isfinalanswer ? me_st_dec_f$dlldecision : 0
+
 
 
 ##f$test##
@@ -86,19 +83,20 @@ A6o KTo K8o K5o QJo Q8o Q3o JTo J5o T6o 92o 87o 85o 84o 62o 43o
 
 
 ##f$preflop##
-me_re_dec
+//me_re_dec
 
 
 ##f$flop##
-me_re_dec
+//me_re_dec
 
 
 ##f$turn##
-me_re_dec
+//me_re_dec
 
 
 ##f$river##
-me_re_dec
+//me_re_dec
+
 
 
 ##f$dlldecision##

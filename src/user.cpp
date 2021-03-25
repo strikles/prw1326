@@ -43,7 +43,7 @@ CLogging* g_log = nullptr;
 CSymbols* g_symbols = nullptr;
 CExtractActions* g_extract_actions;
 CBoardTexture* g_board_texture = nullptr;
-//COpponentModeling* g_opponent_modeling = nullptr;
+COpponentModeling* g_opponent_modeling = nullptr;
 CDecision* g_decision = nullptr;
 
 bool is_busy = false;
@@ -57,10 +57,10 @@ void DLLOnUnLoad()
 	if (g_decision)
 		delete g_decision;
 
-	/*
+	
 	if (g_opponent_modeling)
 		delete g_opponent_modeling;
-	*/
+	
 
 	if (g_board_texture)
 		delete g_board_texture;
@@ -80,10 +80,10 @@ void __stdcall DLLUpdateOnNewFormula()
 	if (g_decision)
 		delete g_decision;
 
-	/*
+	
 	if(g_opponent_modeling)
 		delete g_opponent_modeling;
-	*/
+	
 
 	if (g_board_texture)
 		delete g_board_texture;
@@ -102,7 +102,7 @@ void __stdcall DLLUpdateOnNewFormula()
 	g_symbols = new CSymbols();
 	g_extract_actions = new CExtractActions();
 	g_board_texture = new CBoardTexture();
-	//g_opponent_modeling = new COpponentModeling();
+	g_opponent_modeling = new COpponentModeling();
 	g_decision = new CDecision();
 }
 
@@ -113,7 +113,7 @@ void __stdcall DLLUpdateOnConnection()
 void __stdcall DLLUpdateOnHandreset() 
 {
 	g_extract_actions->ExtractActionsReset();
-	//g_opponent_modeling->HandReset();
+	g_opponent_modeling->HandReset();
 }
 
 void __stdcall DLLUpdateOnNewRound() 
@@ -122,6 +122,15 @@ void __stdcall DLLUpdateOnNewRound()
 
 void __stdcall DLLUpdateOnMyTurn() 
 {
+	is_busy = true;
+	g_symbols->UpdateOHSymbols();
+	g_board_texture->CalcTexture();
+	g_extract_actions->ExtractActions();
+	g_opponent_modeling->ModelOpponents();
+
+	GetSymbol("cmd$recalc");
+	g_decision->Decision();
+	is_busy = false;
 }
 
 void __stdcall DLLUpdateOnHeartbeat() 
@@ -176,7 +185,7 @@ DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery)
 		g_symbols->UpdateOHSymbols();
 		g_board_texture->CalcTexture();
 		g_extract_actions->ExtractActions();
-		//g_opponent_modeling->ModelOpponents();
+		g_opponent_modeling->ModelOpponents();
 
 		GetSymbol("cmd$recalc");
 		double decision = g_decision->Decision();

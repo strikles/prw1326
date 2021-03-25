@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+//#include <string>
 #include <set>
 #include <vector>
 
@@ -88,11 +88,12 @@ public:
 	void PrwSetPreflopMiddleList(int player_ndx, double play_pct, double exclude_pct, int weight);
 	void PrwSetPreflopTopList(int player_ndx, double play_pct, int weight);
 	int  ModelOpponent(int chair_ndx,int betround, ePlayerAction action);
+	int  ModelOpponents();
 
 	void init(int listnum, int weight);
 	void HandReset();
 	void PrwLogHandlist(int handnumber, int userchair, int betround, int log_param);
-	void CreateDir(std::string dirname);
+	void CreateDir(char *dirname);
 };
 
 //extern COpponentModeling* g_opponent_modeling;
