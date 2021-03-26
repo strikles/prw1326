@@ -277,3 +277,40 @@ int COpponentModeling::ModelOpponent(int chair_ndx, int betround, ePlayerAction 
 
 	return 0;
 }
+
+int COpponentModeling::ModelOpponents()
+{
+	int chair_ndx, betround = g_symbols->get_betround();
+
+	for (chair_ndx = 0; chair_ndx < g_symbols->get_nchairs(); chair_ndx++)
+	{
+		if (g_extract_actions->_current_hand_info._player_actions[chair_ndx]._b_was_in_game)
+		{
+			if (ePreflop == betround)
+			{
+				//opp modeling - move
+				double pt_vpip = g_symbols->_pt.get_pt_vpip(chair_ndx);
+				if (pt_vpip < 0)
+					pt_vpip = 0.4;
+
+				double pt_pfr = g_symbols->_pt.get_pt_pfr(chair_ndx);
+				if (pt_pfr < 0)
+					pt_pfr = 0.15;
+
+				ePreflopAction preflop_action = g_extract_actions->_current_hand_info._player_actions[chair_ndx].GetPreflopAction(false);
+				if (preflop_action == actionCall)
+					PrwSetPreflopTopList(chair_ndx, pt_vpip, 1024);
+				else if (preflop_action >= actionBetRaise)
+					PrwSetPreflopTopList(chair_ndx, pt_pfr, 1024);
+			}
+			else
+			{
+				ePostflopAction postflop_action = g_extract_actions->_current_hand_info._player_actions[chair_ndx].GetPostflopAction(betround);
+				if (postflop_action >= actionCall)
+					Prw1326Postflop(chair_ndx, 1024);
+			}
+		}
+	}
+
+	return 0;
+}
